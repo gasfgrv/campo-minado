@@ -22,10 +22,10 @@ class BotaoCampo(private val campo: Campo) : JButton() {
         border = BorderFactory.createBevelBorder(0)
         addMouseListener(MouseCliqueListener(campo, { it.abrir() }, { it.alteracaoMarcacao() }))
 
-        campo.onEvento(this::aplicarEstilo)
+        campo.onEvento { _, evento -> this.aplicarEstilo(evento) }
     }
 
-    private fun aplicarEstilo(campo: Campo, evento: CampoEvento) {
+    private fun aplicarEstilo(evento: CampoEvento) {
         when (evento) {
             CampoEvento.EXPLOSAO -> aplicarEstiloExplodido()
             CampoEvento.ABERTURA -> aplicarEstiloAberto()

@@ -23,7 +23,7 @@ class Tabuleiro(val qtdeLinhas: Int, val qtdeColunas: Int, val qtdeMinas: Int) {
     private fun gerarCamposColunas(linha: Int) {
         for (coluna in 0 until qtdeColunas) {
             val novoCampo = Campo(linha, coluna)
-            novoCampo.onEvento(this::verificarVitoriaDerrota)
+            novoCampo.onEvento { _, evento -> this.verificarVitoriaDerrota(evento) }
             campos[linha].add(novoCampo)
         }
     }
@@ -48,8 +48,8 @@ class Tabuleiro(val qtdeLinhas: Int, val qtdeColunas: Int, val qtdeMinas: Int) {
     private fun sortearMinas() {
         val gerador = Random()
 
-        var linhaSorteada = -1
-        var colunaSorteada = -1
+        var linhaSorteada: Int
+        var colunaSorteada: Int
         var quantidadeMinasAtual = 0
 
         while (quantidadeMinasAtual < this.qtdeMinas) {
@@ -71,7 +71,7 @@ class Tabuleiro(val qtdeLinhas: Int, val qtdeColunas: Int, val qtdeMinas: Int) {
         return jogadorGanhou
     }
 
-    private fun verificarVitoriaDerrota(campo: Campo, evento: CampoEvento) {
+    private fun verificarVitoriaDerrota(evento: CampoEvento) {
         if (evento == CampoEvento.EXPLOSAO) {
             callbacks.forEach { it(TabuleiroEvento.DERROTA) }
         } else if (objetivoAlcancado()) {
